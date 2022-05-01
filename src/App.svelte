@@ -1,10 +1,36 @@
 <script lang="ts">
-	export let name: string;
+	let inputMarkdown: string;
+	let outputTextile: string;
+
+	const convertTextile = () => {
+		var convert = (orgString: string): string => {
+			let buffer = orgString;
+			buffer = buffer.replace(/^### /gm, 'h3. '); //  見出し変換 
+			buffer = buffer.replace(/^## /gm, 'h2. ');
+			buffer = buffer.replace(/^# /gm, 'h1. ');
+			buffer = buffer.replace(/(h[1-3]\. .*)(\r\n|\r|\n)(?!(\r\n|\r|\n))/g, '$1$2$2$3');  //  見出しの次の行に空行追加
+			return buffer;
+		};
+
+		outputTextile = convert(inputMarkdown);
+		const outTextarea: HTMLTextAreaElement = <HTMLTextAreaElement>document.getElementById('outArea');
+		outTextarea.value = outputTextile;
+	};
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<div>
+		<label for='inArea'>Markdownを入力:</label>
+		<textarea bind:value={inputMarkdown} id='inArea'></textarea>
+	</div>
+	<div>
+		<button on:click={convertTextile}>
+			Textileに変換
+		</button>
+	</div>
+	<div>
+		<textarea id='outArea'></textarea>
+	</div>
 </main>
 
 <style>
@@ -15,11 +41,9 @@
 		margin: 0 auto;
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
+	textarea {
+		width: 100%;
+		height: 200px;
 	}
 
 	@media (min-width: 640px) {
