@@ -1,6 +1,6 @@
 <script lang="ts">
-	let inputMarkdown: string = '';
-	let outputTextile: string;
+	let inputMarkdown = '';
+	let outputTextile = '';
 	$: outputTextile = convert(inputMarkdown);
 
 	function convert(orgString: string): string {
@@ -10,15 +10,15 @@
 		buffer = buffer.replace(/^# /gm, 'h1. ');
 		buffer = buffer.replace(/(h[1-3]\. .*)(\r\n|\r|\n)(?!(\r\n|\r|\n))/g, '$1$2$2$3');  //  見出しの次の行に空行追加
 		return buffer;
-	};
+	}
 	function clearInput() {
 		inputMarkdown = "";
-	};
+	}
 	function copyToClipBoard() {
 		const outArea = document.querySelector<HTMLTextAreaElement>('#outArea');
 		outArea.select();
 		document.execCommand('copy');
-	};
+	}
 </script>
 
 <main>
